@@ -1,0 +1,21 @@
+mangodb : https://cloud.mongodb.com/v2/60aa7101115ddc494c35b6ea#clusters?fastPoll=true
+
+matthieu.bois@outlook.fr Antilops123,
+
+name : Projet6OpenClassrooms
+
+Utilisateur 1 : Admin Admin
+
+driver : 
+mongodb+srv://Admin:<password>@projet6.h0qiv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+
+
+//
+
+dossier : 
+
+server.js
+app.js 
+
+Models : ( )
