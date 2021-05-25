@@ -1,0 +1,17 @@
+Probleme erreur 500 : 
+
+zone.js:2969 POST http://localhost:3000/api/auth/login 500 (Internal Server Error) 
+
+context : 
+
+je suis sur :  http://localhost:4200/signup
+
+je crée un newUser et click button :
+
+chrome network :
+name :  status: Type:
+signup  200  preflight
+signup  201  xhr
+login   500  xhr
+login   200  preflight
+
