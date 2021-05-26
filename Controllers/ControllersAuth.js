@@ -1,7 +1,7 @@
 
 const bcrypt = require('bcrypt');                // bcrypte package de securité
 const User = require('../Models/users');
-const Jwt =     require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res, next) => { // on ajoute new user
     bcrypt.hash(req.body.password, 10) // number = "salage" 0 < + securisé
@@ -26,19 +26,17 @@ exports.login = (req, res, next) => { //  pk
             console.log("passe a bcrypt")
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json({ error: 'password not valid !' });
+                    if(!valid) {
+                        return res.status(401).json({ error : 'password not valid !' });
                     }
                     console.log("pass valid ok ver response")
                     res.status(200).json({
-                        userId: user._id, 
-                        token: 'token' //Jwt.sign(                      // ERREUR 500 VENANT D'ICI ! partie token
-                            //{ 
-                               // userId: user._id 
-                            //},
-                            //'RANDOM_TOKEN_SECRET',
-                            //{ expiresIN: '12h' }
-                        //)
+                        userId : user._id, 
+                        token: jwt.sign(                      // ERREUR 500 VENANT D'ICI ! partie token
+                        { userId: user._id},
+                        'RANDOM_TOKEN_SECRET',
+                        { expiresIn: '24h' },
+                        )
                     });
                 })
                 .catch(error => res.status(500).json({ error }));

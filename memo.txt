@@ -19,3 +19,19 @@ server.js
 app.js 
 
 Models : ( )
+
+
+// étapes : 
+
+1 : cloner et installer le frontend (npm + node-sass(depreciated) remplacer par sass)
+    -ng serve
+2 : créer dossier backend (npm init/git init..)
+3 : créer la structure ( voir cour pour procédure)
+    - fichier server.js // app .js
+    - créer les routes grossierements 
+    - structure de dossier (routes/middlewares/Models...)
+4 : créer les logique pour inscription et login 
+    -acces au site Piquante
+5 : créer les logique pour les sauces
+6 : securiser les routes
+7 : 
