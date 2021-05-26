@@ -32,6 +32,11 @@ Models : ( )
     - structure de dossier (routes/middlewares/Models...)
 4 : créer les logique pour inscription et login 
     -acces au site Piquante
+    -token a implanter ! (important pour sauces)
 5 : créer les logique pour les sauces
+    -getAllSauces : ok basic
+    -getOne : ok basic
+    -del : ok basic
+    -modify : non fonctionel EN COURS : JEUDI MATIN ( revoir le cour sur PUT) : objectif fin des logique jeudi soir, vendredi partie securité. 
 6 : securiser les routes
 7 : 
