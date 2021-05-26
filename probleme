@@ -52,5 +52,40 @@ console : user crée !
             //'RANDOM_TOKEN_SECRET',
             //{ expiresIN: '12h' }   <------- expireIn ... ... ... 
             //)
-            
+(4-5h..)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Probleme error 400 ! createSauce ! 
+//////////////////////////////////////// Résolu !! ////////////////////////////////////////////////////////////////////////////////////////////
+
+response : 
+ {"error":
+    {"errors":
+        {"usersDisliked":{"name":"ValidatorError",
+        "message":"Path `usersDisliked` is required.","properties":
+        {"message":"Path `usersDisliked` is required.","type":"required","path":"usersDisliked"},
+        "kind":"required","path":"usersDisliked"},
+        "usersLiked":{"name":"ValidatorError","message":"Path `usersLiked` is required.","properties":
+        {"message":"Path `usersLiked` is required.","type":"required","path":"usersLiked"},"kind":"required",
+        "path":"usersLiked"},"dislikes":{"name":"ValidatorError","message":"Path `dislikes` is required.","properties":
+        {"message":"Path `dislikes` is required.","type":"required","path":"dislikes"},"kind":"required","path":"dislikes"},"likes":
+        {"name":"ValidatorError","message":"Path `likes` is required.","properties":{"message":"Path `likes` is required.","type":"required","path":"likes"}
+        ,"kind":"required","path":"likes"}},"_message":"saucesModel validation failed","name":"ValidationError","message":
+        "saucesModel validation failed: usersDisliked: Path `usersDisliked` is required., usersLiked: Path `usersLiked` is required.,
+         dislikes: Path `dislikes` is required., likes: Path `likes` is required."}}
+
+viens du model, lors de la création de la structure les objects "likes, dislike..." reglés sur require : true. 
+pour la création seulement supprimer les valeurs ''require :true'', revenir plus tard pour la partie LIKE !  <----------------           SE SOUVENIR pour like ! LALALALA
+
+RESULT : 
+console : sauce enregistrée
+----> GET ERROR 404 ( surment middleware getAllSauces)
+
+[ dans fichier frontend : sauce-formComponent --- >       L117    this.router.navigate(['/sauces']); redirection vers la route api/sauces (tableau des sauces)]
+
+(5min)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+Probleme error 404 ! Get getAllSauces
