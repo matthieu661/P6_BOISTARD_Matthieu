@@ -4,7 +4,6 @@ const User = require('../Models/users');
 const Jwt =     require('jsonwebtoken');
 
 exports.signup = (req, res, next) => { // on ajoute new user
-
     bcrypt.hash(req.body.password, 10) // number = "salage" 0 < + securisé
         .then(hash => {
             const user = new User({
@@ -32,14 +31,14 @@ exports.login = (req, res, next) => { //  pk
                     }
                     console.log("pass valid ok ver response")
                     res.status(200).json({
-                        userId: user._id,
-                        token: Jwt.sign(
-                            { 
-                                userId: user._id 
-                            },
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIN: '12h' }
-                        )
+                        userId: user._id, 
+                        token: 'token' //Jwt.sign(                      // ERREUR 500 VENANT D'ICI ! partie token
+                            //{ 
+                               // userId: user._id 
+                            //},
+                            //'RANDOM_TOKEN_SECRET',
+                            //{ expiresIN: '12h' }
+                        //)
                     });
                 })
                 .catch(error => res.status(500).json({ error }));

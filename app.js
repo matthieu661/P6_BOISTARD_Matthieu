@@ -6,7 +6,9 @@ const path = require('path');
 const bodyParser = require('body-parser'); //package pour extraire objet JSON (Installé via npm install --save body-parser)
 // mongoose :
 const mongoose = require('mongoose'); // package de methode pour mangoDB 
-
+// vers routes
+const routesSauces = require('./Routes/routesSauc');
+const routesAuth = require('./Routes/routesAuth'); 
 
 
 
@@ -34,9 +36,7 @@ app.use((req, res, next) => {
 // Converts
 app.use(bodyParser.json()); // middleware global pour extraire le JSON venant de la requete client et pouvoir le traiter (POST)
 
-// vers routes
-const routesSauces = require('./Routes/routesSauc');
-const routesAuth = require('./Routes/routesAuth'); 
+
 
 // routes
 app.use('/api/sauces', routesSauces);
