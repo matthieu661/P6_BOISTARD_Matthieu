@@ -1,6 +1,8 @@
-Probleme erreur 500 : 
 
-zone.js:2969 POST http://localhost:3000/api/auth/login 500 (Internal Server Error) 
+////////////////////////////////  en cours //////////////////////////////////////////////////////////////////////////////////////
+Probleme erreur 500 : ----> origine : fichier controllerAuth : ligne 35-42 ( c'est la partie de creation du token qui deconne ! )
+
+POST http://localhost:3000/api/auth/login 500 (Internal Server Error) 
 
 context : 
 
@@ -15,3 +17,39 @@ signup  201  xhr
 login   500  xhr
 login   200  preflight
 
+console : user crée !
+        : erreur 500
+
+// solution : 
+1 : relecture des fichiers : 
+    -app.js :  app.use avec la bonne route et la bonne const ok !
+    -routesAuths.js : le router est ok !
+    -controllerAuth.js : relecture du code, 'comparaison avec le tuto openclassroom' ok !
+    ...
+2 : test sur postman 
+    - la creation renvoie un 201 ! donc user crée..
+
+    - le login renvoie une 500 !     
+    - test en entrant un user non enregistré = 401 .. ok!
+    - test avec user existant et mauvais mdp = 401 .. ok!
+    probleme de mango DB ?
+
+3 : mango DB : 
+    - si la requete signup fonctionne je n'est pas de problm d'Access.. 
+        Acces ok
+    - Verifier le model de donnée User ( source manifest du Projet ) OK !
+
+4 : retour sur controllerAuth : 
+    - implanter des console.log pour voir si la fonction login bloque qqle part! = tous passent ..
+    - reduire les fonctionalités : code au plus basique 
+        sans jsonwebtoken = 200 ok !
+
+        //Jwt.sign(                      // ERREUR 500 VENANT D'ICI ! partie token
+            //{ 
+            // userId: user._id 
+            //},
+            //'RANDOM_TOKEN_SECRET',
+            //{ expiresIN: '12h' }
+            //)
+            
+        sans bcrypt = 
