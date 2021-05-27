@@ -1,3 +1,4 @@
+en cours : l'image de createsauce s'enregistre 2 fois..pk ?
 
 
 Probleme erreur 500 : LOGIN
@@ -89,3 +90,28 @@ console : sauce enregistrée
 
 
 Probleme error 404 ! Get getAllSauces
+//////////////////////////////////////// Résolu !! ////////////////////////////////////////////////////////////////////////////////////////////
+le probleme venait de deux choses :
+
+routerSauces.get('/sauces', Authentification, CtrlSauces.getAllSauces); // remplacé par : routerSauces.get('/', Authentification, CtrlSauces.getAllSauces);  
+la route etait deja specified dans le app.js [ app.use('/api/sauces', routesSauces);]
+
+et 
+
+//routerSauces.post('/:id/like', Authentification, CtrlSauces.likeSauce); // <--- créer une erreur object incoonu (normal elle est pas encore crée = desactivation)
+(30min)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Probléme erreur 500 : modify
+//////////////////////////////////////// Résolu !! ////////////////////////////////////////////////////////////////////////////////////////////
+        - powershell consol : TypeError: {(intermediate value)(intermediate value)}.then is not a function L34
+        - console :
+            - erreur 500
+        
+        solution : saucesModel.updateOne({ _id: req.params.id }), { ...objetSauce, _id: req.params.id } remplacé par : saucesModel.updateOne({ _id: req.params.id }, { ...objetSauce, _id: req.params.id })
+        Erreur de " ()" mal placé ! ...
+(15min)
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

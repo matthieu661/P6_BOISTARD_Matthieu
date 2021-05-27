@@ -28,9 +28,10 @@ exports.modifySauces = (req, res, next) => {
         {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...req.body };                            // modifie une sauce existante
-    saucesModel.updateOne({ _id: req.params.id }), { ...objetSauce, _id: req.params.id }
-        .then(() => res.status(201).json({ message: 'sauce modifiée' }))
+        } : { ...req.body };          
+        // modifie une sauce existante
+    saucesModel.updateOne({ _id: req.params.id }, { ...objetSauce, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
         .catch(error => res.status(400).json({ error }));
 };
 // DELETE x1
