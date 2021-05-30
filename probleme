@@ -78,6 +78,7 @@ response :
 
 viens du model, lors de la création de la structure les objects "likes, dislike..." reglés sur require : true. 
 pour la création seulement supprimer les valeurs ''require :true'', revenir plus tard pour la partie LIKE !  <----------------           SE SOUVENIR pour like ! LALALALA
+(finalement pas nescessaire pour la fonction like)
 
 RESULT : 
 console : sauce enregistrée
@@ -115,3 +116,16 @@ Probléme erreur 500 : modify
 (15min)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Probleme error 404 ! like ! 
+//////////////////////////////////////// Résolu !! ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+console : 
+core.js:12301 ERROR Error: Uncaught (in promise): HttpErrorResponse:
+ {"headers":{"normalizedNames":{},"lazyUpdate":null,"headers":{}},"status":0,"statusText":"Unknown Error","url":null,"ok":false,
+ "name":"HttpErrorResponse","message":"Http failure response for (unknown url): 0 Unknown Error","error":{"isTrusted":true}}
+
+
+..juste un mauvais nom de route .. (middleware likeSauces == likeSauce )
+(1h)

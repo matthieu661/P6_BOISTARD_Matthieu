@@ -13,7 +13,7 @@ const Multer =require('../Middleware/Multer-config');
 
 routerSauces.post('/', Authentification, Multer, CtrlSauces.createSauces); // create
 
-//routerSauces.post('/:id/like', Authentification, CtrlSauces.likeSauce); // like
+routerSauces.post('/:id/like', Authentification, CtrlSauces.likeSauce); // like
 
 routerSauces.put('/:id', Authentification, Multer, CtrlSauces.modifySauces); // modify
 

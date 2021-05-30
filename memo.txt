@@ -37,6 +37,51 @@ Models : ( )
     -getAllSauces : ok basic
     -getOne : ok basic
     -del : ok basic
-    -modify : non fonctionel EN COURS : JEUDI MATIN ( revoir le cour sur PUT) : objectif fin des logique jeudi soir, vendredi partie securité. 
-6 : securiser les routes
-7 : 
+    -modify : non fonctionel EN COURS : JEUDI MATIN ( revoir le cour sur PUT) : objectif fin des logique jeudi soir, vendredi partie securité.
+        - modify : fonctionel (erreur de frappe)
+    -likes : ok fonctionel
+6 : partie securité (vendredi)
+        
+6 : securiser les routes : ok ( le role du middlewareAuth)
+7 : le mots de passe doit ettre chiffré : ok ( bcrypt)
+8 : email doit etre unique : ok (mango_unique_vaidator)
+9 : les mots de passe sont stocké de maniere securisé : 
+
+    owasp :
+10 : Injection : (utilisé la validation de donnée pour chaque ligne de formulaire) ---> interdire les signes = et ' et " 
+    signup : ok 
+    login : ok 
+    createSauce : ok
+    modifysauce : ok 
+
+(dimanche)
+    : Priratage de session : 
+            -mdp fort --> regex ( 10 caractere/ No caractéres spec.)
+            -nombre de tentative : ?? rate-limiter, facil a config // OK
+        
+        - raw-body ( limite par la taille que produit chaque request, en mettant une limite)
+        - bouncer-express / express-Brut ()
+        - captcha ( nescessite le front ??)
+        - rate-limiter ( nombre de requete par ip) ( OK )
+
+            -cookies ?????
+
+    : exposition donées sensibles : ???
+
+    :XML
+
+    :Contournement Control Acces
+
+    :mauvaise configuratiuon de securité
+
+    : cross-site scripting et autres injections intersites
+            - helmet : OK
+
+    : désérialisation non sécurisé
+
+    : composant // = No
+
+    : monitoring : = NO
+
+
+

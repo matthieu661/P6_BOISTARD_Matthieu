@@ -30,9 +30,48 @@ app.use((req, res, next) => {
 });
 
 
+//  SECURITE
+/*const svgCaptcha = require('svg-captcha');    ---> manque le front ?
+
+app.get('/captcha', function (req, res) {
+    var captcha = svgCaptcha.create();
+    req.session.captcha = captcha.text;
+    
+    res.type('svg');
+    res.status(200).send(captcha.data);
+});*/
+// brutforce
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: "Too many request from this IP"
+});
 
 
+app.use(limiter); // appliqué a toutes les routes 
+// cookie 
+/*const cookieSession = require('cookie-session')
 
+const expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 hour
+
+app.use(session({
+  name: 'session',
+  keys: ['key1', 'key2'],
+  cookie: { secure: true,
+            httpOnly: true,
+            domain: 'example.com',
+            path: 'foo/bar',
+            expires: expiryDate
+          }
+  })
+);*/
+
+// HELMET
+const helmet = require("helmet");
+app.use(helmet());
+// ///////////////////////////////////////////////////////////
 // routes
 app.use(bodyParser.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));
