@@ -1,4 +1,4 @@
-en cours : l'image de createsauce s'enregistre 2 fois..pk ?
+
 
 
 Probleme erreur 500 : LOGIN
@@ -129,3 +129,10 @@ core.js:12301 ERROR Error: Uncaught (in promise): HttpErrorResponse:
 
 ..juste un mauvais nom de route .. (middleware likeSauces == likeSauce )
 (1h)
+
+
+
+owasp
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Probleme validation formualair regex : tout passe.. 
+    - placer la verification aprés le Parse.Json .. sinon soit tout faux soit tout bon 

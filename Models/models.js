@@ -9,11 +9,11 @@ const modelSauce = mongoose.Schema({
     imageUrl: { type: String, required: true}, // proteger differement ?
     heat: { type: Number, required: true}, 
 
-
-    likes: { type: Number, default: 0},
-    dislikes : { type : Number, default: 0},
-    usersLiked : { type : [String], default: []},
-    usersDisliked : { type :[String], default :[]},
+    
+    likes: { type: Number, default:0, require: true},             
+    dislikes: { type: Number, default:0, require: true},         
+    usersLiked: { type: Array, default:[], require: true},        
+    usersDisliked: { type: Array, default:[], require: true},     
 
 }) ; 
 

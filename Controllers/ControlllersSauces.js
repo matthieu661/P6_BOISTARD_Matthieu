@@ -34,37 +34,73 @@ exports.createSauces = (req, res, next) => {      // enregistre la nouvelle sauc
 };
 
 exports.likeSauce = (req, res, next) => {
-    // 1 je dois trouvé la sauce == findOne
-    saucesModel.findOne({ _id: req.params.id })
-        .then(sauce => {
-            // 2 testé si j'aime === 1 ou -1  ? (utiliser if / if /if  ? teste de cas (avec break)) // + est-ce que j'ai déja voté ? (doit recherché le tableau des likes)
-            if (req.body.like === 1 && sauce.usersLiked.indexOf(req.body.userId) < 0) {
-                sauce.usersLiked.push(req.body.userid); //fonction push dans le tableau
-                sauce.likes += 1;
-            } //incremente le tableau des likes
-            if (req.body.like === -1 && sauce.usersDisliked.indexOf(req.body.userId) < 0) {
-                sauce.usersDisliked.push(req.body.userId);
-                sauce.dislikes += 1;
-            }  // incremente le tableau dislikes
-            if (req.body.like === 1 && sauce.usersLiked.indexOf(req.body.userId) == 1) { // c'est juste l'inverse..T_T! 
-                sauce.usersDisliked.push(req.body.userId);
-                sauce.dislikes -= 1;
-            }
-            if (req.body.like === 1 && sauce.usersLiked.indexOf(req.body.userId) == -1) {
-                sauce.usersDisliked.push(req.body.userId);
-                sauce.dislikes += 1;
-            }
-            res.status(200).json({ message: "like pris en compte" })
-        })
-        .catch(error => res.status(400).json({ error }));
-}
+    // le tableau des like est dans le modelsauce donc je dois update la sauce pour sauvegarder le compteur de like
+    //( dans model la valeur est 0?? utile ??( oui si pas de middleware pour prevoir le cas ""))
+    // sans updateOne, la fonction ne sauvegardera pas dans la BD le like ::: ! 
+    //si 1
+    if (req.body.like === 1) {  // Req envoie 1
+        //Collection DB --> methode updateOne(propre a MDB) -->(sur element identifier grace a son Id)
+        //--->$inc(operator MDB, increment de 1 la valeur dans like,)
+        //-->$push (Operator MDB, fonctionne avec un Array) isncit dans la tableau userliked le userId lié a la requete
+        saucesModel.updateOne({ _id: req.params.id }, { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId } })
+            .then(() => { res.status(200).json({ message: 'Green' }); })
+            .catch((error) => { res.status(404).json({ error: error }); });
+    }
+    // si -1
+    else if (req.body.like === -1) { // Req renvoie -1
+        // == pareil --> ( increment dislike de 1 et Array userDisliked est push par userID)
+        saucesModel.updateOne(
+            { _id: req.params.id }, { $inc: { dislikes: 1 }, $push: { usersDisliked: req.body.userId } })
+            .then(() => {
+                res.status(200).json({ message: 'Red' });
+            })
+            .catch((error) => {
+                res.status(404).json({ error: error });
+            });
+    }
+    // si 0
+    else { // Req renvoie 0, test au click sur button --> lance 
+        saucesModel.findOne({ _id: req.params.id }) // trouve la sauce
+            .then(
+                (sauces) => {
+                    // test si UserId est dans le tableau des userliked
+                    if (sauces.usersLiked.find(userId => userId === req.body.userId)) { // 
+                        saucesModel.updateOne(
+                            { _id: req.params.id }, { $inc: { likes: -1 }, $pull: { usersDisliked: req.body.userId } })// met a 0 dislikes --> $pull (operateur MDB == suppression ) efface userId des usersliked
+                            .then(() => {
+                                res.status(200).json({ message: 'Green --> Grey' });
+                            })
+                            .catch((error) => {
+                                res.status(404).json({ error: error });
+                            });
+                    } else { // si  NON -->  effectue la meme chose dans le tableau Dislikes
+                        saucesModel.updateOne(
+                            { _id: req.params.id },
+                            { $inc: { Dislikes: -1 }, $pull: { usersDisLiked: req.body.userId } })
+                            .then(() => {
+                                res.status(200).json({ message: 'Red --> Grey' });
+                            })
+                            .catch((error) => {
+                                res.status(404).json({ error: error });
+                            });
+                    }
+                })
+            .catch(
+                (error) => {
+                    res.status(404).json({ error: error });
+                });
+    };
+};
+
 // 3 le 0 == annule 
+// 3-1 de vert à neutre
+//3-2 de red a neutre
 // faut stocker ces resultats dans 2 tableaux ( fichier sauce.model.ts sur le front) --> modifier le model de sauce en tableau?? 
 
 // a test : default
 // https://stackoverflow.com/questions/41033839/make-mongoose-string-schema-type-default-value-as-blank-and-make-the-field-optio
 // https://mongoosejs.com/docs/2.7.x/docs/defaults.html
-// push tableau
+// push tableau operator : 
 // : https://www.ipgirl.com/47307/poussez-les-objects-dans-le-tableau-mongo-via-la-mongoose.html
 
 
@@ -109,6 +145,7 @@ exports.getOneSauces = (req, res, next) => {                                    
 };
 
 exports.getAllSauces = (req, res, next) => {
+    //sauceModel.remove({})// pour delete tout 
     saucesModel.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));                 // récupere toutes les sauces dans la base de données
