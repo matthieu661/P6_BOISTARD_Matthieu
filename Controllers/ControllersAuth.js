@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt');                // bcrypte package de securité
 const User = require('../Models/users');
 const jwt = require('jsonwebtoken');
 const noSql = require('./Secure');
+const MaskEmail = require('./Secure')
 
-function maskator (sentence) {
+/*function maskator (sentence) {
     if (typeof sentence === "string") {
       let headMail = sentence.slice(0,1);
       let bodyMail = sentence.slice(1, sentence.length-4);
@@ -21,7 +22,7 @@ function maskator (sentence) {
     }
     console.log(sentence + " is not a mail");
     return false
-}
+}*/
 
 exports.signup = (req, res, next) => { // on ajoute new user
     if (noSql.ValidationEmail(req.body.email)) { // test secutité
@@ -29,7 +30,7 @@ exports.signup = (req, res, next) => { // on ajoute new user
             bcrypt.hash(req.body.password, 10) // number = "salage" 0 < + securisé
                 .then(hash => {
                     const user = new User({
-                        email: maskator(req.body.email), // email into body
+                        email: MaskEmail.MasquageEmail(req.body.email), // email into body
                         password: hash // string crypté into body
                     });
                     user.save() // fonction predef. 
@@ -48,7 +49,7 @@ exports.signup = (req, res, next) => { // on ajoute new user
 exports.login = (req, res, next) => { //  pk 
     if (noSql.ValidationEmail(req.body.email)) { // test secutité
         if (noSql.ValidationPassword(req.body.password)) { // test secutité
-            User.findOne({ email:  maskator(req.body.email) })
+            User.findOne({ email:  MaskEmail.MasquageEmail(req.body.email) })
                 .then(user => {
                     if (!user) {
                         return res.status(401).json({ error: 'user not found !' });
