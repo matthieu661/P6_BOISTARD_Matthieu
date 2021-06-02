@@ -38,59 +38,48 @@ exports.likeSauce = (req, res, next) => {
     //( dans model la valeur est 0?? utile ??( oui si pas de middleware pour prevoir le cas ""))
     // sans updateOne, la fonction ne sauvegardera pas dans la BD le like ::: ! 
     //si 1
-    if (req.body.like === 1) {  // Req envoie 1
-        //Collection DB --> methode updateOne(propre a MDB) -->(sur element identifier grace a son Id)
-        //--->$inc(operator MDB, increment de 1 la valeur dans like,)
-        //-->$push (Operator MDB, fonctionne avec un Array) isncit dans la tableau userliked le userId lié a la requete
-        saucesModel.updateOne({ _id: req.params.id }, { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId } })
-            .then(() => { res.status(200).json({ message: 'Green' }); })
-            .catch((error) => { res.status(404).json({ error: error }); });
-    }
-    // si -1
-    else if (req.body.like === -1) { // Req renvoie -1
-        // == pareil --> ( increment dislike de 1 et Array userDisliked est push par userID)
-        saucesModel.updateOne(
-            { _id: req.params.id }, { $inc: { dislikes: 1 }, $push: { usersDisliked: req.body.userId } })
-            .then(() => {
-                res.status(200).json({ message: 'Red' });
+    if (req.body.like === 0) {
+        saucesModel.findOne({ _id: req.params.id })
+            .then((sauce) => {
+                if (sauce.usersLiked.find(user => user === req.body.userId)) {
+                    saucesModel.updateOne({ _id: req.params.id }, {
+                        $inc: { likes: -1 },
+                        $pull: { usersLiked: req.body.userId }
+                    })
+                        .then(() => { res.status(201).json({ message: "vote enregistré." }); })
+                        .catch((error) => { res.status(400).json({ error }); });
+    
+                } else if (sauce.usersDisliked.find(user => user === req.body.userId)) { 
+                    saucesModel.updateOne({ _id: req.params.id }, {
+                        $inc: { dislikes: -1 },
+                        $pull: { usersDisliked: req.body.userId }
+                    })
+                        .then(() => { res.status(201).json({ message: "vote enregistré." }); })
+                        .catch((error) => { res.status(400).json({ error }); });
+                }
+    
             })
-            .catch((error) => {
-                res.status(404).json({ error: error });
-            });
+            .catch((error) => { res.status(404).json({ error }); });
     }
-    // si 0
-    else { // Req renvoie 0, test au click sur button --> lance 
-        saucesModel.findOne({ _id: req.params.id }) // trouve la sauce
-            .then(
-                (sauces) => {
-                    // test si UserId est dans le tableau des userliked
-                    if (sauces.usersLiked.find(userId => userId === req.body.userId)) { // 
-                        saucesModel.updateOne(
-                            { _id: req.params.id }, { $inc: { likes: -1 }, $pull: { usersDisliked: req.body.userId } })// met a 0 dislikes --> $pull (operateur MDB == suppression ) efface userId des usersliked
-                            .then(() => {
-                                res.status(200).json({ message: 'Green --> Grey' });
-                            })
-                            .catch((error) => {
-                                res.status(404).json({ error: error });
-                            });
-                    } else { // si  NON -->  effectue la meme chose dans le tableau Dislikes
-                        saucesModel.updateOne(
-                            { _id: req.params.id },
-                            { $inc: { Dislikes: -1 }, $pull: { usersDisLiked: req.body.userId } })
-                            .then(() => {
-                                res.status(200).json({ message: 'Red --> Grey' });
-                            })
-                            .catch((error) => {
-                                res.status(404).json({ error: error });
-                            });
-                    }
-                })
-            .catch(
-                (error) => {
-                    res.status(404).json({ error: error });
-                });
-    };
-};
+    else if(req.body.like != 0) {
+        if(req.body.like > 0) {
+            saucesModel.updateOne({ _id: req.params.id }, {            
+                $inc: { likes: 1 },                                 
+                $push: { usersLiked: req.body.userId }             
+              })
+                .then(() => { res.status(201).json({ message: "vote enregistré." }); })
+                .catch((error) => { res.status(400).json({ error }); }); 
+        }else if(req.body.like < 0) {
+            saucesModel.updateOne({ _id: req.params.id }, {               
+                $inc: { dislikes: 1 },                                
+                $push: { usersDisliked: req.body.userId }             
+              })
+                .then(() => { res.status(201).json({ message: "vote enregistré." }); }) 
+                .catch((error) => { res.status(400).json({ error }); }); 
+        }
+        
+    }
+}
 
 // 3 le 0 == annule 
 // 3-1 de vert à neutre
@@ -145,7 +134,7 @@ exports.getOneSauces = (req, res, next) => {                                    
 };
 
 exports.getAllSauces = (req, res, next) => {
-    //sauceModel.remove({})// pour delete tout 
+    //sauceModel.remove({})// pour delete tout
     saucesModel.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.status(400).json({ error }));                 // récupere toutes les sauces dans la base de données

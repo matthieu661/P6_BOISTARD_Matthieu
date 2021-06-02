@@ -28,6 +28,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
+    "maskdata": "^1.1.4",
     "mongoose": "^5.12.10",
     "mongoose-sanitizer-plugin": "^1.1.0",
     "mongoose-unique-validator": "^2.0.3",

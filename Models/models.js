@@ -10,8 +10,8 @@ const modelSauce = mongoose.Schema({
     heat: { type: Number, required: true}, 
 
     
-    likes: { type: Number, default:0, require: true},             
-    dislikes: { type: Number, default:0, require: true},         
+    likes: { type: Number, default: 0, require: true},             
+    dislikes: { type: Number, default: 0, require: true},         
     usersLiked: { type: Array, default:[], require: true},        
     usersDisliked: { type: Array, default:[], require: true},     
 

@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 
 //  SECURITE
-/*const svgCaptcha = require('svg-captcha');    ---> manque le front ?
+/*const svgCaptcha = require('svg-captcha');    ---> front
 
 app.get('/captcha', function (req, res) {
     var captcha = svgCaptcha.create();
