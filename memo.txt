@@ -86,6 +86,6 @@ Models : ( )
 
 -
 RAJOUTER 2 UTILISATEURS AVEC TOUT LES PRIVIL2GES POUR LES DEUX § §§§§§§§ :: 
-
+https://docs.atlas.mongodb.com/reference/user-roles/#mongodb-authrole-Project-Data-Access-Read-Write
 MASQUAGE DES DONNEES
 
