@@ -1,5 +1,3 @@
-
-
 module.exports = {
     ValideString: function (x) {
         const testString = /^[a-zA-Z0-9-éèàäùüç/s/ ]+$/; // pas caractéres spéciaux(accents ok)
@@ -24,8 +22,6 @@ module.exports = {
         }
         return maskedEmail.join('');
     },
-    
-  
 }
 
 

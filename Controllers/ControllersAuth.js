@@ -1,20 +1,20 @@
 
-const bcrypt = require('bcrypt');                // bcrypte package de securité
+const bcrypt = require('bcrypt');                
 const User = require('../Models/users');
 const jwt = require('jsonwebtoken');
 const noSql = require('./Secure');
 const MaskEmail = require('./Secure')
 
-exports.signup = (req, res, next) => { // on ajoute new user
-    if (noSql.ValidationEmail(req.body.email)) { // test secutité
-        if (noSql.ValidationPassword(req.body.password)) { // test secutité 
-            bcrypt.hash(req.body.password, 10) // number = "salage" 0 < + securisé
+exports.signup = (req, res, next) => { 
+    if (noSql.ValidationEmail(req.body.email)) { 
+        if (noSql.ValidationPassword(req.body.password)) { 
+            bcrypt.hash(req.body.password, 10) 
                 .then(hash => {
                     const user = new User({
-                        email: MaskEmail.MasquageEmail(req.body.email), // email into body
-                        password: hash // string crypté into body
+                        email: MaskEmail.MasquageEmail(req.body.email),
+                        password: hash 
                     });
-                    user.save() // fonction predef. 
+                    user.save() 
                         .then(() => res.status(201).json({ message: " user crée !" }))
                         .catch(error => res.status(400).json({ error }));
                 })
@@ -27,9 +27,9 @@ exports.signup = (req, res, next) => { // on ajoute new user
     }
 };
 
-exports.login = (req, res, next) => { //  pk 
-    if (noSql.ValidationEmail(req.body.email)) { // test secutité
-        if (noSql.ValidationPassword(req.body.password)) { // test secutité
+exports.login = (req, res, next) => { 
+    if (noSql.ValidationEmail(req.body.email)) {
+        if (noSql.ValidationPassword(req.body.password)) {
             User.findOne({ email:  MaskEmail.MasquageEmail(req.body.email) })
                 .then(user => {
                     if (!user) {
@@ -44,7 +44,7 @@ exports.login = (req, res, next) => { //  pk
                             console.log("pass valid ok ver response")
                             res.status(200).json({
                                 userId: user._id,
-                                token: jwt.sign(                      // ERREUR 500 VENANT D'ICI ! partie token
+                                token: jwt.sign(                   
                                     { userId: user._id },
                                     'RANDOM_TOKEN_SECRET',
                                     { expiresIn: '24h' },
