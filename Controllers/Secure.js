@@ -12,8 +12,8 @@ module.exports = {
         return testPassword.test(x)
     },
     MasquageEmail : function(email) { // voir 
-        const maskedEmail = email.replace(/([^@\.])/g, "*").split('');
-        const previous	= "";
+        let maskedEmail = email.replace(/([^@\.])/g, "*").split('');
+        let previous	= "";
         for(i=0;i<maskedEmail.length;i++){
             if (i<=1 || previous == "." || previous == "@"){
                 maskedEmail[i] = email[i];

@@ -1,5 +1,7 @@
 const saucesModel = require('../Models/models');
 const noSql = require('./Secure');
+const fs = require('fs'); 
+const path = require('path');
 
 exports.createSauces = (req, res, next) => {    
     const objetSauce = JSON.parse(req.body.sauce);  
@@ -70,10 +72,12 @@ exports.likeSauce = (req, res, next) => {
 }
 
 exports.modifySauces = (req, res, next) => {
+
     const objetSauce = req.file ?
         {
             ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+              
         } : { ...req.body };
     if (noSql.ValideString(objetSauce.name) && noSql.ValideString(objetSauce.manufacturer) && noSql.ValideString(objetSauce.description) && noSql.ValideString(objetSauce.mainPepper)) {
         // modifie une sauce existante
@@ -88,13 +92,13 @@ exports.modifySauces = (req, res, next) => {
 
 exports.deleteSauces = (req, res, next) => {
     saucesModel.findOne({ _id: req.params.id })
-        .then(sauce => {
+        .then((sauce) => {
             const filename = sauce.imageUrl.split('/images/')[1];
-            fs.unlink(`images/${filename}`, () => {                   
+                fs.unlink(`images/${filename}`, () => {                   
                 saucesModel.deleteOne({ _id: req.params.id })
-                    .then(() => res.status(201).json({ message: 'sauce suprimée' }))
+                    .then(() => res.status(201).json({ message: 'sauce suprimée' })) 
                     .catch(error => res.status(400).json({ error }));
-            });
+            })
         })
         .catch(error => res.status(500).json({ error }));
 };
