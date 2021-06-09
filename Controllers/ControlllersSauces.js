@@ -4,11 +4,12 @@ const fs = require('fs');
 const path = require('path');
 
 exports.createSauces = (req, res, next) => {    
-    const objetSauce = JSON.parse(req.body.sauce);  
+    const objetSauce = JSON.parse(req.body.sauce);
+    
     if (noSql.ValideString(objetSauce.name) && noSql.ValideString(objetSauce.manufacturer) && noSql.ValideString(objetSauce.description) && noSql.ValideString(objetSauce.mainPepper)) {
+        
         delete objetSauce._id;
         console.log(req.body.sauce);
-
         const sauce = new saucesModel({
             ...objetSauce,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -17,10 +18,11 @@ exports.createSauces = (req, res, next) => {
             usersLiked: [], // a tester
             usersDisliked: []
         });
-
+        
         sauce.save()
             .then(() => res.status(201).json({ message: 'sauce enregistrée' }))
             .catch(error => res.status(400).json({ error }));
+    
     } else {
 
         return res.status(401).json({ message: 'sans caractéres spéciaux svp !' });
@@ -77,8 +79,9 @@ exports.modifySauces = (req, res, next) => {
         {
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-              
+              // rennomer l'image ! 
         } : { ...req.body };
+        console.log(objetSauce)
     if (noSql.ValideString(objetSauce.name) && noSql.ValideString(objetSauce.manufacturer) && noSql.ValideString(objetSauce.description) && noSql.ValideString(objetSauce.mainPepper)) {
         // modifie une sauce existante
         saucesModel.updateOne({ _id: req.params.id }, { ...objetSauce, _id: req.params.id })

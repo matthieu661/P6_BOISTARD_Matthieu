@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 
-mongoose.connect('mongodb+srv://Admin:Admin@projet6.h0qiv.mongodb.net/Projet6OpenClassrooms?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://ProjectDataAccessAdmin:openclassrooms@Projet6.h0qiv.mongodb.net/Projet6OpenClassrooms?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
