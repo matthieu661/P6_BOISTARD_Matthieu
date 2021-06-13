@@ -13,6 +13,7 @@ module.exports = {
     },
     MasquageEmail : function(email) { // voir 
         let maskedEmail = email.replace(/([^@\.])/g, "*").split('');
+        console.log(email)
         let previous	= "";
         for(i=0;i<maskedEmail.length;i++){
             if (i<=1 || previous == "." || previous == "@"){
@@ -20,6 +21,7 @@ module.exports = {
             }
             previous = email[i];
         }
+        console.log(typeof maskedEmail.join(''))
         return maskedEmail.join('');
     },
 }

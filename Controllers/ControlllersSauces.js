@@ -2,14 +2,26 @@ const saucesModel = require('../Models/models');
 const noSql = require('./Secure');
 const fs = require('fs'); 
 const path = require('path');
+var sanitize = require('mongo-sanitize');
+ 
+// The sanitize function will strip out any keys that start with '$' in the input,
+// so you can pass it to MongoDB without worrying about malicious users overwriting
+// query selectors.
+//var clean = sanitize(req.params.username);
+ 
+/*Users.findOne({ name: clean }, function(err, doc) {
+  // ...
+});*/
 
-exports.createSauces = (req, res, next) => {    
+exports.createSauces = (req, res, next) => { 
+    let test = (req.body); 
+    console.log(JSON.stringify(test))
     const objetSauce = JSON.parse(req.body.sauce);
     
-    if (noSql.ValideString(objetSauce.name) && noSql.ValideString(objetSauce.manufacturer) && noSql.ValideString(objetSauce.description) && noSql.ValideString(objetSauce.mainPepper)) {
+     
         
         delete objetSauce._id;
-        console.log(req.body.sauce);
+        //console.log(req.body.sauce);
         const sauce = new saucesModel({
             ...objetSauce,
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
@@ -23,10 +35,7 @@ exports.createSauces = (req, res, next) => {
             .then(() => res.status(201).json({ message: 'sauce enregistrée' }))
             .catch(error => res.status(400).json({ error }));
     
-    } else {
-
-        return res.status(401).json({ message: 'sans caractéres spéciaux svp !' });
-    }
+     
 };
 
 exports.likeSauce = (req, res, next) => {

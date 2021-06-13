@@ -1,11 +1,23 @@
 const express = require('express'); 
-const mongoose = require('mongoose'); 
-const routesSauces = require('./Routes/routesSauc');
-const routesAuth = require('./Routes/routesAuth'); 
-const path = require('path');
-const bodyParser = require('body-parser'); 
+ 
+const bodyParser = require('body-parser');
+// correction
+// query injection
+const mongoSanitize = require('express-mongo-sanitize');
+// xss
+const xss = require('xss-clean');
+// ////////////////////////
+const mongoose = require('mongoose');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
+ 
+const path = require('path');
+const routesSauces = require('./Routes/routesSauc');
+const routesAuth = require('./Routes/routesAuth'); 
+
+
+
+
 
 mongoose.connect('mongodb+srv://ProjectDataAccessAdmin:openclassrooms@Projet6.h0qiv.mongodb.net/Projet6OpenClassrooms?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -14,6 +26,7 @@ mongoose.connect('mongodb+srv://ProjectDataAccessAdmin:openclassrooms@Projet6.h0
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express(); // appel express avant les "app.use.."
+
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,12 +41,35 @@ const limiter = rateLimit({
     message: "Too many request from this IP"
 });
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// correction 
+// query Sql
+app.use(
+  mongoSanitize({
+    replaceWith: '_',
+  }),
+);
+// XSS
+app.use(xss());
+// /////////////
+
+
+/*function clean (req, res, next) {
+  // replace an HTTP posted body property with the sanitized string
+  const sanitizedString = req.sanitize(req.body.email);
+  // send the response -- res.body.sanitized = " world"
+  res.send({ sanitized: sanitizedString });
+};*/
+
+
+//app.use(expressSanitizer());
 app.use(limiter); 
 app.use(helmet());
 
-app.use(bodyParser.json());
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', routesSauces);
-app.use('/api/auth', routesAuth);
+app.use('/api/auth' , routesAuth);
 
 module.exports = app; // exporte express via "app."
